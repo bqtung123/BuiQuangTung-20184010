@@ -25,6 +25,7 @@ import utils.Configs;
 import utils.Utils;
 import views.screen.BaseScreenHandler;
 import views.screen.cart.CartScreenHandler;
+import views.screen.invoice.InvoiceScreenHandler;
 
 public class RushShippingScreenHandler extends BaseScreenHandler implements Initializable {
 	
@@ -57,7 +58,20 @@ public class RushShippingScreenHandler extends BaseScreenHandler implements Init
 
 	@FXML
 	void submitDeliveryInfo(MouseEvent event) throws IOException, InterruptedException, SQLException {
-
+		HashMap messages = order.getDeliveryInfo();
+		messages.put("date", date.getText());
+		messages.put("month", month.getText());
+		messages.put("address", hour.getText());
+		messages.put("minute",minute.getText());
+		
+		Invoice invoice = getBController().createInvoice(order);
+		
+		BaseScreenHandler InvoiceScreenHandler = new InvoiceScreenHandler(this.stage, Configs.INVOICE_SCREEN_PATH, invoice);
+		InvoiceScreenHandler.setPreviousScreen(this);
+		InvoiceScreenHandler.setHomeScreenHandler(homeScreenHandler);
+		InvoiceScreenHandler.setScreenTitle("Invoice Screen");
+		InvoiceScreenHandler.setBController(getBController());
+		InvoiceScreenHandler.show();
 	}
 
 	public PlaceOrderController getBController(){
