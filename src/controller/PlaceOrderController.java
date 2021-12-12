@@ -121,6 +121,59 @@ public class PlaceOrderController extends BaseController{
     	return true;
     }
     
+    public boolean validateDate(String date) {
+    	if(date == null) return false;
+    	if(date.isEmpty() || date.isBlank()) return false;
+    	try {
+    	int dateInt = Integer.parseInt(date);
+    	if(dateInt<=0||dateInt>31) return false; 
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+    	
+    	
+    }
+    
+    public boolean validateMonth(String month) {
+    	if(month == null) return false;
+    	if(month.isEmpty() || month.isBlank()) return false;
+    	try {
+    	int monthInt = Integer.parseInt(month);
+    	if(monthInt<=0||monthInt>12) return false; 
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+    	
+    }
+    
+    public boolean validateHour(String hour) {
+    	if(hour == null) return false;
+    	if(hour.isEmpty() || hour.isBlank()) return false;
+    	try {
+    	int hourInt = Integer.parseInt(hour);
+    	if(hourInt<0||hourInt>23) return false; 
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+    	
+    }
+    
+    public boolean validateMinute(String minute) {
+    	if(minute == null) return false;
+    	if(minute.isEmpty() || minute.isBlank()) return false;
+    	try {
+    	int minuteInt = Integer.parseInt(minute);
+    	if(minuteInt<0||minuteInt>59) return false; 
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+    	
+    }
+    
 
     /**
      * This method calculates the shipping fees of order

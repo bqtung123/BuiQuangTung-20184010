@@ -63,7 +63,7 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
     @FXML
     private SplitMenuButton splitMenuBtnSearch;
 
-    private List homeItems;
+    private List homeItems;//list of media items
 
     public HomeScreenHandler(Stage stage, String screenPath) throws IOException{
         super(stage, screenPath);
@@ -86,6 +86,8 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         setBController(new HomeController());
+        
+        // get list of media
         try{
             List medium = getBController().getAllMedia();
             this.homeItems = new ArrayList<>();
@@ -122,6 +124,7 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
         addMenuItem(2, "CD", splitMenuBtnSearch);
     }
 
+    // set image for 2 images
     public void setImage(){
         // fix image path caused by fxml
         File file1 = new File(Configs.IMAGE_PATH + "/" + "Logo.png");
@@ -132,13 +135,17 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
         Image img2 = new Image(file2.toURI().toString());
         cartImage.setImage(img2);
     }
-
+    // add list items to home screen
     public void addMediaHome(List items){
+    	//clone items list to media items list
         ArrayList mediaItems = (ArrayList)((ArrayList) items).clone();
+        // clear each Vbox in Hbox
         hboxMedia.getChildren().forEach(node -> {
             VBox vBox = (VBox) node;
             vBox.getChildren().clear();
         });
+        
+        // iterator mediaItems list to add to Vbox
         while(!mediaItems.isEmpty()){
             hboxMedia.getChildren().forEach(node -> {
                 int vid = hboxMedia.getChildren().indexOf(node);
@@ -152,7 +159,7 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
             return;
         }
     }
-
+    // add filter items to button and bind actions
     private void addMenuItem(int position, String text, MenuButton menuButton){
         MenuItem menuItem = new MenuItem();
         Label label = new Label();

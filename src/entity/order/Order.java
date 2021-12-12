@@ -9,14 +9,14 @@ import utils.Configs;
 public class Order {
     
     private int shippingFees;
-    private List lstOrderMedia;
+    private List<OrderMedia> lstOrderMedia;
     private HashMap<String, String> deliveryInfo;
 
     public Order(){
         this.lstOrderMedia = new ArrayList<>();
     }
 
-    public Order(List lstOrderMedia) {
+    public Order(List<OrderMedia> lstOrderMedia) {
         this.lstOrderMedia = lstOrderMedia;
     }
 
@@ -28,11 +28,11 @@ public class Order {
         this.lstOrderMedia.remove(om);
     }
 
-    public List getlstOrderMedia() {
+    public List<OrderMedia> getlstOrderMedia() {
         return this.lstOrderMedia;
     }
 
-    public void setlstOrderMedia(List lstOrderMedia) {
+    public void setlstOrderMedia(List<OrderMedia> lstOrderMedia) {
         this.lstOrderMedia = lstOrderMedia;
     }
 

@@ -14,6 +14,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -43,6 +44,9 @@ public class ShippingScreenHandler extends BaseScreenHandler implements Initiali
 
 	@FXML
 	private ComboBox<String> province;
+	
+	@FXML
+	private CheckBox box;
 
 	private Order order;
 
@@ -73,6 +77,7 @@ public class ShippingScreenHandler extends BaseScreenHandler implements Initiali
 		messages.put("address", address.getText());
 		messages.put("instructions", instructions.getText());
 		messages.put("province", province.getValue());
+		
 		try {
 			// process and validate delivery info
 			getBController().processDeliveryInfo(messages);
@@ -87,12 +92,23 @@ public class ShippingScreenHandler extends BaseScreenHandler implements Initiali
 		
 		// create invoice screen
 		Invoice invoice = getBController().createInvoice(order);
+		// khoi tao man hinh
+		if(!box.isSelected()) {
 		BaseScreenHandler InvoiceScreenHandler = new InvoiceScreenHandler(this.stage, Configs.INVOICE_SCREEN_PATH, invoice);
 		InvoiceScreenHandler.setPreviousScreen(this);
 		InvoiceScreenHandler.setHomeScreenHandler(homeScreenHandler);
 		InvoiceScreenHandler.setScreenTitle("Invoice Screen");
 		InvoiceScreenHandler.setBController(getBController());
 		InvoiceScreenHandler.show();
+		}
+		if(box.isSelected()) {
+			BaseScreenHandler RushShippingScreenHandler = new RushShippingScreenHandler(this.stage, Configs.RUSH_SHIPPING_SCREEN_PATH, order);
+			RushShippingScreenHandler.setPreviousScreen(this);
+			RushShippingScreenHandler.setHomeScreenHandler(homeScreenHandler);
+			RushShippingScreenHandler.setScreenTitle("Rush shipping Screen");
+			RushShippingScreenHandler.setBController(getBController());
+			RushShippingScreenHandler.show();
+		}
 	}
 
 	public PlaceOrderController getBController(){
