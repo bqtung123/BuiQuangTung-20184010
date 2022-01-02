@@ -8,11 +8,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 class ValidateTimeTest {
-	private PlaceOrderController placeOrderController;
+	private PlaceRushOrderController placeOrderController;
 	
 	@BeforeEach
 	void setUp() throws Exception{
-		placeOrderController = new PlaceOrderController();
+		placeOrderController = new PlaceRushOrderController();
 	}
 	
 	

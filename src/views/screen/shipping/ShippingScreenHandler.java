@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+import calculate.shippingfees.NormalShippingFeesCalculator;
 import controller.PlaceOrderController;
 import common.exception.InvalidDeliveryInfoException;
 import entity.invoice.Invoice;
@@ -29,6 +30,9 @@ public class ShippingScreenHandler extends BaseScreenHandler implements Initiali
 
 	@FXML
 	private Label screenTitle;
+	
+	@FXML
+	private Label errorLabel;
 
 	@FXML
 	private TextField name;
@@ -78,15 +82,21 @@ public class ShippingScreenHandler extends BaseScreenHandler implements Initiali
 		messages.put("instructions", instructions.getText());
 		messages.put("province", province.getValue());
 		
+		
+	
 		try {
 			// process and validate delivery info
 			getBController().processDeliveryInfo(messages);
 		} catch (InvalidDeliveryInfoException e) {
-			throw new InvalidDeliveryInfoException(e.getMessage());
+			errorLabel.setText("Please enter valid shipping information");
+			return;
 		}
+		
+	
 	
 		// calculate shipping fees
-		int shippingFees = getBController().calculateShippingFee(order);
+		getBController().setShippingFeeCalculator(new NormalShippingFeesCalculator());
+		int shippingFees = getBController().getShippingFeeCalculator().calculateShippingFee(order);
 		order.setShippingFees(shippingFees);
 		order.setDeliveryInfo(messages);
 		
@@ -101,7 +111,8 @@ public class ShippingScreenHandler extends BaseScreenHandler implements Initiali
 		InvoiceScreenHandler.setBController(getBController());
 		InvoiceScreenHandler.show();
 		}
-		if(box.isSelected()) {
+		if(box.isSelected() && getBController().checkRushDeliveryStatus(order)) {
+			// display new screen
 			BaseScreenHandler RushShippingScreenHandler = new RushShippingScreenHandler(this.stage, Configs.RUSH_SHIPPING_SCREEN_PATH, order);
 			RushShippingScreenHandler.setPreviousScreen(this);
 			RushShippingScreenHandler.setHomeScreenHandler(homeScreenHandler);

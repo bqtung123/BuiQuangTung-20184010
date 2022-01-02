@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 import common.exception.InvalidDeliveryInfoException;
 import controller.PlaceOrderController;
+import controller.PlaceRushOrderController;
 import entity.invoice.Invoice;
 import entity.order.Order;
 import javafx.beans.property.BooleanProperty;
@@ -31,6 +32,9 @@ public class RushShippingScreenHandler extends BaseScreenHandler implements Init
 	
 	@FXML
 	private Label screenTitle;
+	
+	@FXML
+	private Label errorLabel;
 
 	@FXML
 	private TextField date;
@@ -61,8 +65,16 @@ public class RushShippingScreenHandler extends BaseScreenHandler implements Init
 		HashMap messages = order.getDeliveryInfo();
 		messages.put("date", date.getText());
 		messages.put("month", month.getText());
-		messages.put("address", hour.getText());
+		messages.put("hour", hour.getText());
 		messages.put("minute",minute.getText());
+		
+		try {
+			// process and validate delivery info
+			new PlaceRushOrderController().processRushDeliveryInfo(messages);
+		} catch (InvalidDeliveryInfoException e) {
+			errorLabel.setText("Please enter valid shipping information");
+			return;
+		}
 		
 		Invoice invoice = getBController().createInvoice(order);
 		

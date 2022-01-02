@@ -28,6 +28,6 @@ public class AIMSDB {
     
 
     public static void main(String[] args) {
-        AIMSDB.getConnection();
+//        AIMSDB.getConnection();
     }
 }

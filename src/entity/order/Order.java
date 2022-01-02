@@ -60,5 +60,14 @@ public class Order {
         }
         return (int) (amount + (Configs.PERCENT_VAT/100)*amount);
     }
+    
+    public boolean checkRushDeliveryStatus() {
+    	  for (Object object : lstOrderMedia) {
+              OrderMedia om = (OrderMedia) object;
+              if(om.getRushDeliveryStatus()) return true;
+          }
+    	  return false;
+    }
+   
 
 }

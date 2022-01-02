@@ -22,7 +22,7 @@ public class Configs {
 			+ " \"cardCode\": \"118609_group1_2020\" ,"
 			+ " \"owner\": \"Group 1\" ,"
 			+ " \"cvvCode\": \"185\" ,"
-			+ " \"dateExpried\": \"1125\" ,"
+			+ " \"dateExpired\": \"1125\" ,"
 			+ " \"transactionContent\": \"Pei debt\" ,"
 			+ " \"amount\": 50000 "
 			+ "}"

@@ -166,6 +166,9 @@ public class Media {
             ", type='" + type + "'" +
             ", imageURL='" + imageURL + "'" +
             "}";
-    }    
+    }  
+    public boolean getRushDeliveryStatus() {
+    	return true;
+    }
 
 }

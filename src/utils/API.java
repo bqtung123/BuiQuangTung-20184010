@@ -2,6 +2,7 @@ package utils;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.Console;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -18,6 +19,8 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.logging.Logger;
+
+import org.junit.jupiter.api.condition.DisabledIfSystemProperties;
 
 import entity.payment.CreditCard;
 import entity.payment.PaymentTransaction;
@@ -62,15 +65,20 @@ public class API {
 
 	private static HttpURLConnection setupConnection(String url,String method, String token)
 			throws MalformedURLException, IOException, ProtocolException {
-		
+		System.out.println(url);
 		LOGGER.info("Request URL: " + url + "\n");
 		URL line_api_url = new URL(url);
 		HttpURLConnection conn = (HttpURLConnection) line_api_url.openConnection();
+		System.out.println(conn);
 		conn.setDoInput(true);
 		conn.setDoOutput(true);
+		System.out.println("set do input out put");
 		conn.setRequestMethod(method);
+		System.out.println("set request method");
 		conn.setRequestProperty("Content-Type", "application/json");
+		System.out.println("set content type");
 		conn.setRequestProperty("Authorization", "Bearer " + token);
+		System.out.println("set authorization");
 		return conn;
 	}
 
@@ -87,19 +95,22 @@ public class API {
 	public static String post(String url, String data
 			, String token
 	) throws IOException {
+		System.out.println(data);
 		allowMethods("PATCH");
-		// Phan 1: Setup
-		HttpURLConnection conn = setupConnection(url,"GET", token);
 		
+		// Phan 1: Setup
+		HttpURLConnection conn = setupConnection(url,"PATCH", token);
+	
 		
 		// Phan 2: Gui du lieu 
 		Writer writer = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
 		writer.write(data);
 		writer.close();
-		
+	
 		
 		//Phan 3: Doc du lieu gui ve tu server
 		String response = readResponse(conn);
+		
 		return response;
 	}
 
@@ -115,8 +126,8 @@ public class API {
 		while ((inputLine = in.readLine()) != null)
 			response.append(inputLine);
 		in.close();
-		LOGGER.info("Respone Info: " + response.substring(0, response.length() - 1).toString());
-		return response.substring(0, response.length() - 1).toString();
+		LOGGER.info("Respone Info: " + response.toString());
+		return response.toString();
 	}
 
 	
@@ -126,6 +137,7 @@ public class API {
 	 * @param methods the methods
 	 */
 	private static void allowMethods(String... methods) {
+		System.out.println("allows method");
 		try {
 			Field methodsField = HttpURLConnection.class.getDeclaredField("methods");
 			methodsField.setAccessible(true);

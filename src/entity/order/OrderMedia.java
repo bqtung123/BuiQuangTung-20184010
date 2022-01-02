@@ -46,5 +46,9 @@ public class OrderMedia {
     public void setPrice(int price) {
         this.price = price;
     }
+    
+    public boolean getRushDeliveryStatus() {
+    	return media.getRushDeliveryStatus();
+    }
 
 }

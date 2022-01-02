@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
 
+import calculate.shippingfees.ShippingFeeCalculator;
 import entity.cart.Cart;
 import entity.cart.CartMedia;
 import common.exception.InvalidDeliveryInfoException;
@@ -25,8 +26,31 @@ public class PlaceOrderController extends BaseController{
      * Just for logging purpose
      */
     private static Logger LOGGER = utils.Utils.getLogger(PlaceOrderController.class.getName());
+   
 
-    /**
+	private ShippingFeeCalculator shippingFeeCalculator;
+	
+	 public PlaceOrderController(ShippingFeeCalculator shippingFeeCalculator) {
+			super();
+			this.shippingFeeCalculator = shippingFeeCalculator;
+		}
+	 
+	 public PlaceOrderController() {
+		 
+	 }
+
+	 
+    public ShippingFeeCalculator getShippingFeeCalculator() {
+		return shippingFeeCalculator;
+	}
+
+
+	public void setShippingFeeCalculator(ShippingFeeCalculator shippingFeeCalculator) {
+		this.shippingFeeCalculator = shippingFeeCalculator;
+	}
+
+
+	/**
      * This method checks the avalibility of product when user click PlaceOrder button
      * @throws SQLException
      */
@@ -79,7 +103,15 @@ public class PlaceOrderController extends BaseController{
    * @throws IOException
    */
     public void validateDeliveryInfo(HashMap<String, String> info) throws InterruptedException, IOException{
-    	
+    	if(!validateAddress(info.get("address"))) {
+    		throw new InvalidDeliveryInfoException();
+    	}
+    	if(!validateName(info.get("name"))) {
+    		throw new InvalidDeliveryInfoException();
+    	}
+    	if(!validatePhoneNumber(info.get("phone"))) {
+    		throw new InvalidDeliveryInfoException();
+    	}
     }
     
     public boolean validatePhoneNumber(String phoneNumber) {
@@ -121,58 +153,11 @@ public class PlaceOrderController extends BaseController{
     	return true;
     }
     
-    public boolean validateDate(String date) {
-    	if(date == null) return false;
-    	if(date.isEmpty() || date.isBlank()) return false;
-    	try {
-    	int dateInt = Integer.parseInt(date);
-    	if(dateInt<=0||dateInt>31) return false; 
-		} catch (Exception e) {
-			return false;
-		}
-		return true;
-    	
-    	
+    public boolean checkRushDeliveryStatus(Order order) {
+    	return order.checkRushDeliveryStatus();
     }
     
-    public boolean validateMonth(String month) {
-    	if(month == null) return false;
-    	if(month.isEmpty() || month.isBlank()) return false;
-    	try {
-    	int monthInt = Integer.parseInt(month);
-    	if(monthInt<=0||monthInt>12) return false; 
-		} catch (Exception e) {
-			return false;
-		}
-		return true;
-    	
-    }
-    
-    public boolean validateHour(String hour) {
-    	if(hour == null) return false;
-    	if(hour.isEmpty() || hour.isBlank()) return false;
-    	try {
-    	int hourInt = Integer.parseInt(hour);
-    	if(hourInt<0||hourInt>23) return false; 
-		} catch (Exception e) {
-			return false;
-		}
-		return true;
-    	
-    }
-    
-    public boolean validateMinute(String minute) {
-    	if(minute == null) return false;
-    	if(minute.isEmpty() || minute.isBlank()) return false;
-    	try {
-    	int minuteInt = Integer.parseInt(minute);
-    	if(minuteInt<0||minuteInt>59) return false; 
-		} catch (Exception e) {
-			return false;
-		}
-		return true;
-    	
-    }
+  
     
 
     /**
@@ -180,10 +165,10 @@ public class PlaceOrderController extends BaseController{
      * @param order
      * @return shippingFee
      */
-    public int calculateShippingFee(Order order){
-        Random rand = new Random();
-        int fees = (int)( ( (rand.nextFloat()*10)/100 ) * order.getAmount() );
-        LOGGER.info("Order Amount: " + order.getAmount() + " -- Shipping Fees: " + fees);
-        return fees;
-    }
+//    public int calculateShippingFee(Order order){
+//        Random rand = new Random();
+//        int fees = (int)( ( (rand.nextFloat()*10)/100 ) * order.getAmount() );
+//        LOGGER.info("Order Amount: " + order.getAmount() + " -- Shipping Fees: " + fees);
+//        return fees;
+//    }
 }

@@ -19,7 +19,7 @@ import utils.Utils;
 public class InterbankSubsystemController {
 
 	private static final String PUBLIC_KEY = "AQzdE8O/fR8=";
-	private static final String SECRET_KEY = "BUXj/7/gHHI=";
+	private static final String SECRET_KEY = "BdDtp/CWTi4=";
 	private static final String PAY_COMMAND = "pay";
 	private static final String VERSION = "1.0.0";
 
@@ -52,9 +52,11 @@ public class InterbankSubsystemController {
 		requestMap.put("transaction", transaction);
 
 		String responseText = interbankBoundary.query(Configs.PROCESS_TRANSACTION_URL, generateData(requestMap));
+		
 		MyMap response = null;
 		try {
 			response = MyMap.toMyMap(responseText, 0);
+			
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 			throw new UnrecognizedException();
